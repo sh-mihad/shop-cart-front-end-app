@@ -1,12 +1,24 @@
 import { useCartDispatch } from "../contexts/cartContext/CartContext"
+import { useProductDispatch } from "../contexts/productsContext/ProductContext"
 
-export default function CartCard({cartItem}) {
+export default function CartCard({ cartItem }) {
     const cartDispatch = useCartDispatch()
-    const handleIncreaseQty = ()=>{
-       cartDispatch({type:'increaseQty',id:cartItem.id})
+    const productDispatch = useProductDispatch()
+    const handleIncreaseQty = () => {
+        if (cartItem.qty === cartItem.stockQty) return alert("Stock Out")
+        cartDispatch({ type: 'increaseQty', id: cartItem.id })
+        productDispatch({
+            type: 'decreaseQty',
+            id: cartItem.id
+        })
     }
-    const handleDecreaseQty = ()=>{
-       cartDispatch({type:'decreaseQty',id:cartItem.id})
+    const handleDecreaseQty = () => {
+        if (cartItem.qty === 1) return;
+        cartDispatch({ type: 'decreaseQty', id: cartItem.id })
+        productDispatch({
+            type: 'increaseQty',
+            id: cartItem.id
+        })
     }
     return (
         <div className="flex items-start space-x-4 pb-4 border-b border-gray-200 mb-4">
@@ -17,7 +29,7 @@ export default function CartCard({cartItem}) {
             <div className="flex-grow">
                 <div className="flex justify-between">
                     <h3 className="font-medium">{cartItem.title}</h3>
-                    <span className="text-red-500 text-sm cursor-pointer" onClick={()=>cartDispatch({type:'removeCart',id:cartItem.id})}>×</span>
+                    <span className="text-red-500 text-sm cursor-pointer" onClick={() => cartDispatch({ type: 'removeCart', id: cartItem.id })}>×</span>
                 </div>
                 <p className="text-sm text-gray-500">Size: Large</p>
                 <p className="text-sm text-gray-500">Color: White</p>

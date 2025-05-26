@@ -1,11 +1,13 @@
 import { useState } from "react"
 import { useCartDispatch, useCarts } from "../contexts/cartContext/CartContext"
+import { useProductDispatch } from "../contexts/productsContext/ProductContext"
 import { isItemAddedCart } from "../utils/utils"
 
 export default function ProductCard({ product }) {
   const [isAddCart,setIsAddCart] = useState(false)
 
   const cartDispatch = useCartDispatch()
+  const productDispatch = useProductDispatch()
   const cartItems = useCarts()
   const handleAddToCart = () => {
     const isItemAddedBefore = isItemAddedCart(cartItems, product.id)
@@ -18,6 +20,10 @@ export default function ProductCard({ product }) {
       type: "addCart",
       item: cartData
     })
+    productDispatch({
+      type:'decreaseQty',
+      id:product.id
+    })
     setIsAddCart(true)
     
    
@@ -26,6 +32,10 @@ export default function ProductCard({ product }) {
     cartDispatch({
       type: "removeCart",
       id: product.id
+    })
+    productDispatch({
+      type:'increaseQty',
+      id:product.id
     })
     setIsAddCart(false)
   }
@@ -61,10 +71,10 @@ export default function ProductCard({ product }) {
         </div>
         <p className="font-bold">${product.price} </p>
         {
-          isAddCart ? 
+          (isAddCart) ? 
         <button className="w-full mt-2 bg-red-800 py-1 text-gray-100 rounded flex items-center justify-center" onClick={handleRemoveCart}>Remove from Cart</button>
         :
-         <button className="disabled:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed w-full mt-2 bg-gray-800 py-1 text-gray-100 rounded flex items-center justify-center active:translate-y-1 transition-all active:bg-gray-900" onClick={handleAddToCart}>Add to Cart</button>
+         <button className={`${product.stockQty <=0 && 'disabled:bg-gray-700 disabled:text-gray-400 disabled:cursor-not-allowed'} w-full mt-2 bg-gray-800 py-1 text-gray-100 rounded flex items-center justify-center active:translate-y-1 transition-all active:bg-gray-900`} disabled={product.stockQty <=0} onClick={handleAddToCart}>Add to Cart</button>
        }
        
       </div>
