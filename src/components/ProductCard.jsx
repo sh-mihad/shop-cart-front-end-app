@@ -9,8 +9,7 @@ export default function ProductCard({ product }) {
   const cartItems = useCarts()
   const handleAddToCart = () => {
     const isItemAddedBefore = isItemAddedCart(cartItems, product.id)
-    if (isItemAddedBefore)return;
-  
+    if (isItemAddedBefore)return;  
       const cartData = {
       ...product,
       qty: product.stockQty

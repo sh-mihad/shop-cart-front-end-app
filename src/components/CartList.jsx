@@ -1,9 +1,11 @@
 import CartCard from "./CartCard";
 
-export default function CartList() {
+export default function CartList({cartProducts}) {
     return (
         <>
-           <CartCard/>
+           {
+            cartProducts.map(cartItem=><CartCard key={cartItem.id} cartItem={cartItem}/>)
+           }
         </>
     )
 }
