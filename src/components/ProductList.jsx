@@ -7,7 +7,6 @@ export default function ProductList() {
     const {searchTerms} = useSearch()
     let productsUi = products.filter(item=>{
         if(searchTerms){
-            console.log("");
             return item.title.toLowerCase().includes(searchTerms.toLowerCase())
         }else{
             return true
