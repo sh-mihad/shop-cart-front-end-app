@@ -1,5 +1,7 @@
+import { useSearch } from "../contexts/serchContext/SerchContext"
 
 export default function Navbar() {
+    const {searchTerms,setSearchTerms} = useSearch()
     return (
         <>
             <div className="bg-black text-white py-2 px-4 text-center text-sm relative">
@@ -20,7 +22,7 @@ export default function Navbar() {
 
                     <div className="flex items-center space-x-4">
                         <div className="relative hidden md:block w-64">
-                            <input type="text" placeholder="Search for products..."
+                            <input type="text" value={searchTerms} onChange={(e)=>setSearchTerms(e.target.value)} placeholder="Search for products..."
                                 className="w-full bg-gray-100 rounded-full py-2 px-4 text-sm" />
                             <span className="absolute right-3 top-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
